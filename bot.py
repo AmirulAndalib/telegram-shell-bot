@@ -148,10 +148,7 @@ def __check_cmd(cmd: str):
 
 
 def __check_cmd_chars(cmd: str):
-    for char in settings.CMD_BLACK_CHARS:
-        if char in cmd:
-            return False
-    return True
+    return all(char not in cmd for char in settings.CMD_BLACK_CHARS)
 
 
 @restricted
@@ -176,8 +173,7 @@ def do_tasks(update, context):
 
 @restricted
 def do_script(update, context):
-    args = context.args.copy()
-    if args:
+    if args := context.args.copy():
         cmd = " ".join(args)
         __do_exec(cmd, update, context, is_script=True)
         return
